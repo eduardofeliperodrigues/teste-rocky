@@ -17,6 +17,17 @@ def correct_quantity(data):
 def export_json(data):
     data.to_json("saida.json", orient="records")
 
+def read_correct_data():
+    return pd.read_json("saida.json")
+
+def print_list_of_products(data):
+    data.sort_values(by=["category", "id"], inplace=True)
+    print("\n\n", data, "\n\n")
+
+def print_total_of_categories(data):
+    data["total_supply"] = data["quantity"] * data["price"]
+    print(data.groupby("category")["total_supply"].sum(), "\n\n")
+
 def main():
     data = read_data()
     correct_names(data)
@@ -24,6 +35,9 @@ def main():
     correct_quantity(data)
     export_json(data)
 
+    correct_data = read_correct_data()
+    print_list_of_products(correct_data)
+    print_total_of_categories(correct_data)
 
 if __name__ == '__main__':
     main()
